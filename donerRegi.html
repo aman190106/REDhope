@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Donor | REDhope</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e30613;
+            --primary-light: #ff4d4d;
+            --primary-dark: #b00000;
+            --secondary: #1a365d;
+            --secondary-light: #2c5282;
+            --light: #f8f9fa;
+            --light-gray: #e9ecef;
+            --medium-gray: #ced4da;
+            --dark-gray: #6c757d;
+            --dark: #212529;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+            --border-radius-sm: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Navigation */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.95), rgba(26, 54, 93, 0.9)), 
+                        url('https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: white;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Registration Header */
+        .registration-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .registration-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .registration-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            border: 3px solid var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .step-number.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .step-number.completed {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            background-color: var(--light-gray);
+            z-index: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: var(--transition);
+        }
+
+        /* Registration Form */
+        .registration-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            margin: 0 auto 80px;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-group label.required-field::after {
+            content: '*';
+            color: var(--primary);
+            margin-left: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 15px;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+        }
+
+        .input-icon .form-control {
+            padding-right: 45px;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            border-radius: 4px;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            border-color: var(--primary);
+        }
+
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .checkbox-option input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .radio-option:hover input[type="radio"],
+        .checkbox-option:hover input[type="checkbox"] {
+            border-color: var(--primary-light);
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--light-gray);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section h3 {
+            color: var(--secondary);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .form-section h3 i {
+            color: var(--primary);
+            font-size: 1.2em;
+        }
+
+        .form-section h3::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--light-gray);
+            margin-left: 15px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-top: 20px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .required-field::after {
+            content: '*';
+            color: var(--primary);
+            margin-left: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 15px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn i {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-large {
+            padding: 18px 40px;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding-top: 70px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .registration-header h1 {
+                font-size: 2.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .registration-container {
+                padding: 30px 20px;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                flex-direction: column;
+                background: var(--secondary);
+                width: 80%;
+                height: 100vh;
+                padding: 80px 30px 30px;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .registration-header h1 {
+                font-size: 2rem;
+            }
+
+            .radio-group, .checkbox-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .form-section h3::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .registration-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .registration-header p {
+                font-size: 1rem;
+            }
+
+            .progress-step {
+                flex: 1;
+            }
+
+            .step-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Custom Form Elements */
+        .custom-select {
+            position: relative;
+        }
+
+        .custom-select select {
+            appearance: none;
+            padding-right: 40px;
+        }
+
+        .custom-select::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--dark-gray);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .tooltip i {
+            color: var(--primary);
+            font-size: 0.9em;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            border-radius: var(--border-radius-sm);
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+
+        .tooltip-text::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--secondary) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        /* Blood Type Selector */
+        .blood-type-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .blood-type-option {
+            position: relative;
+        }
+
+        .blood-type-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .blood-type-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 5px;
+            background-color: white;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .blood-type-option input:checked ~ .blood-type-label {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .blood-type-option:hover .blood-type-label {
+            border-color: var(--primary-light);
+        }
+
+        /* Enhanced Checkbox */
+        .enhanced-checkbox {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .enhanced-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: white;
+            border: 2px solid var(--medium-gray);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .enhanced-checkbox:hover input ~ .checkmark {
+            border-color: var(--primary-light);
+        }
+
+        .enhanced-checkbox input:checked ~ .checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .enhanced-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .voice-assistant-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #e53935, #d32f2f);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(229, 57, 53, 0.5);
+    z-index: 1000;
+    border: none;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.voice-assistant-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(229, 57, 53, 0.6);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(229, 57, 53, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+    }
+}
+    </style>
+</head>
+<body>
+    <button class="voice-assistant-btn" onclick="openVoiceAssistant()">
+    <i class="fas fa-microphone"></i>
+</button>
+    <!-- Hero Section with Navigation -->
+    <section class="hero">
+        <!-- Navigation Container -->
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-text">RED<span>hope</span></div>
+            </div>
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu " style="text-decoration: none;">
+                <li><a href="index.html" style="color: white ; text-decoration: none;">Home</a></li>
+            </ul>
+        </div>
+
+        <!-- Registration Header -->
+        <div class="container registration-header">
+            <h1>Become a Life Saver</h1>
+            <p>Join our network of donors and help us ensure that no patient dies due to lack of blood. Your registration takes just 2 minutes but can save countless lives.</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="container">
+            <div class="progress-container">
+                <div class="progress-line">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number active" id="step1">1</div>
+                    <div class="step-label">Personal Info</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number" id="step2">2</div>
+                    <div class="step-label">Contact Details</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number" id="step3">3</div>
+                    <div class="step-label">Health Info</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number" id="step4">4</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <div class="container">
+        <div class="registration-container" style="margin-top: 20px;">
+            <form id="donorRegistrationForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" id="step-1">
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName" class="required-field">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="required-field">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dob" class="required-field">Date of Birth</label>
+                                <input type="date" id="dob" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required-field">Gender</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="male" required>
+                                        <span>Male</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="female">
+                                        <span>Female</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="other">
+                                        <span>Other</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn next-step">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Contact Information -->
+                <div class="form-step" id="step-2">
+                    <div class="form-section">
+                        <h3><i class="fas fa-address-book"></i> Contact Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="email" class="required-field">Email Address</label>
+                                <div class="input-icon">
+                                    <input type="email" id="email" class="form-control" required>
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="required-field">Phone Number</label>
+                                <div class="input-icon">
+                                    <input type="tel" id="phone" class="form-control" required>
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="address" class="required-field">Street Address</label>
+                                <input type="text" id="address" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="required-field">City</label>
+                                <input type="text" id="city" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state" class="required-field">State</label>
+                                <select id="state" class="form-control" required>
+                                    <option value="">Select State</option>
+                                    <option value="DL">Delhi</option>
+                                    <option value="MH">Maharashtra</option>
+                                    <option value="TN">Tamil Nadu</option>
+                                    <option value="KA">Karnataka</option>
+                                    <option value="UP">Uttar Pradesh</option>
+                                    <option value="WB">West Bengal</option>
+                                    <option value="GJ">Gujarat</option>
+                                    <option value="RJ">Rajasthan</option>
+                                    <option value="AP">Andhra Pradesh</option>
+                                    <option value="TS">Telangana</option>
+                                    <option value="KL">Kerala</option>
+                                    <option value="MP">Madhya Pradesh</option>
+                                    <option value="HR">Haryana</option>
+                                    <option value="PB">Punjab</option>
+                                    <option value="OR">Odisha</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode" class="required-field">Pincode</label>
+                                <input type="text" id="pincode" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline prev-step">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn next-step">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Donation & Health Information -->
+                <div class="form-step" id="step-3">
+                    <div class="form-section">
+                        <h3><i class="fas fa-heartbeat"></i> Donation Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="bloodType" class="required-field">Blood Type</label>
+                                <div class="blood-type-selector">
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="A+" required>
+                                        <span class="blood-type-label">A+</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="A-">
+                                        <span class="blood-type-label">A-</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="B+">
+                                        <span class="blood-type-label">B+</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="B-">
+                                        <span class="blood-type-label">B-</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="AB+">
+                                        <span class="blood-type-label">AB+</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="AB-">
+                                        <span class="blood-type-label">AB-</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="O+">
+                                        <span class="blood-type-label">O+</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="O-">
+                                        <span class="blood-type-label">O-</span>
+                                    </label>
+                                    <label class="blood-type-option">
+                                        <input type="radio" name="bloodType" value="unknown">
+                                        <span class="blood-type-label">Don't Know</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required-field">Donation Type</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="donationType" value="whole" required>
+                                        <span>Whole Blood</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="donationType" value="plasma">
+                                        <span>Plasma</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="donationType" value="platelets">
+                                        <span>Platelets</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required-field">Donation Frequency</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="frequency" value="one-time" required>
+                                        <span>One Time</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="frequency" value="regular">
+                                        <span>Regular Donor</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="frequency" value="emergency">
+                                        <span>Emergency Contact</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastDonation">Last Donation Date (if applicable)</label>
+                                <input type="date" id="lastDonation" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-medkit"></i> Health Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="weight" class="required-field">Weight (kg)
+                                    <span class="tooltip">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="tooltip-text">Minimum 45kg required to donate blood</span>
+                                    </span>
+                                </label>
+                                <input type="number" id="weight" class="form-control" min="45" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="height" class="required-field">Height (cm)</label>
+                                <input type="number" id="height" class="form-control" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Any existing medical conditions?</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="diabetes">
+                                        <span>Diabetes</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="hypertension">
+                                        <span>Hypertension</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="heart">
+                                        <span>Heart Disease</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="conditions" value="none" checked>
+                                        <span>None</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" id="otherCondition" name="conditions" value="other">
+                                        <span>Other (please specify)</span>
+                                        <input type="text" id="otherConditionText" class="form-control" style="margin-left: 10px; width: auto; display: none;">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Have you ever been diagnosed with any of the following?</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="diagnosis" value="hiv">
+                                        <span>HIV/AIDS</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="diagnosis" value="hepatitisB">
+                                        <span>Hepatitis B</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="diagnosis" value="hepatitisC">
+                                        <span>Hepatitis C</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="diagnosis" value="malaria">
+                                        <span>Malaria</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="diagnosis" value="none" checked>
+                                        <span>None of the above</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline prev-step">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn next-step">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review & Submit -->
+                <div class="form-step" id="step-4">
+                    <div class="form-section">
+                        <h3><i class="fas fa-file-signature"></i> Review Your Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <div id="reviewContent" style="background: var(--light); padding: 20px; border-radius: var(--border-radius-sm);">
+                                    <!-- Review content will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-check-circle"></i> Consent & Declaration</h3>
+                        <div class="form-group full-width">
+                            <label class="enhanced-checkbox">
+                                <input type="checkbox" id="consent" name="consent" required>
+                                <span class="checkmark"></span>
+                                <span class="required-field">I declare that all the information provided is true and accurate to the best of my knowledge. I understand that providing false information may disqualify me from donating blood.</span>
+                            </label>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="enhanced-checkbox">
+                                <input type="checkbox" id="privacy" name="privacy" required>
+                                <span class="checkmark"></span>
+                                <span class="required-field">I consent to REDhope storing my personal information for the purpose of blood donation coordination and agree to be contacted when my blood type is needed.</span>
+                            </label>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="enhanced-checkbox">
+                                <input type="checkbox" id="updates" name="updates">
+                                <span class="checkmark"></span>
+                                <span>I would like to receive updates about blood donation campaigns and other initiatives (optional)</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-outline prev-step">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="submit" class="btn">
+                            <i class="fas fa-heart"></i> Submit Registration
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-text" style="color: white;">RED<span style="color: var(--primary);">hope</span></div>
+                    </div>
+                    <p>REDhope is India's largest youth-run non-profit organization working to solve the problem of blood shortage in the country.</p>
+                    <div class="social-links" style="margin-top: 25px; display: flex; gap: 15px;">
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Donor Registration</a></li>
+                        <li><a href="#">Request Blood</a></li>
+                        <li><a href="#">Our Partners</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Donor Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Eligibility Criteria</a></li>
+                        <li><a href="#">Donation Process</a></li>
+                        <li><a href="#">Health Benefits</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Donor Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-phone" style="margin-right: 10px;"></i> Helpline: +91 7984510xxx</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 10px;"></i> info.redhope@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> PARUL university , vadodara , gujarat, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 REDhope. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> to Save Lives</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Form Step Navigation
+        const formSteps = document.querySelectorAll('.form-step');
+        const stepNumbers = document.querySelectorAll('.step-number');
+        const progressFill = document.getElementById('progressFill');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        let currentStep = 0;
+
+        // Initialize form
+        showStep(currentStep);
+        updateProgress();
+
+        // Next button click handler
+        nextButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    showStep(currentStep);
+                    updateProgress();
+                    scrollToTop();
+                }
+            });
+        });
+
+        // Previous button click handler
+        prevButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentStep--;
+                showStep(currentStep);
+                updateProgress();
+                scrollToTop();
+            });
+        });
+
+        // Show current step
+        function showStep(stepIndex) {
+            formSteps.forEach((step, index) => {
+                step.classList.toggle('active', index === stepIndex);
+            });
+            
+            // Update step numbers
+            stepNumbers.forEach((number, index) => {
+                number.classList.remove('active', 'completed');
+                if (index < stepIndex) {
+                    number.classList.add('completed');
+                } else if (index === stepIndex) {
+                    number.classList.add('active');
+                }
+            });
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentStep / (formSteps.length - 1)) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Validate current step before proceeding
+        function validateStep(stepIndex) {
+            let isValid = true;
+            const currentStep = formSteps[stepIndex];
+            const requiredFields = currentStep.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.classList.add('error');
+                    isValid = false;
+                    
+                    // Add error styling
+                    field.style.borderColor = 'var(--danger)';
+                    field.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+                    
+                    // Add event listener to remove error on input
+                    field.addEventListener('input', function() {
+                        this.classList.remove('error');
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }, { once: true });
+                }
+            });
+            
+            if (!isValid) {
+                // Scroll to first error
+                const firstError = currentStep.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
+                
+                // Pulse animation to draw attention
+                currentStep.style.animation = 'pulse 0.5s';
+                setTimeout(() => {
+                    currentStep.style.animation = '';
+                }, 500);
+            }
+            
+            return isValid;
+        }
+
+        // Scroll to top of form
+        function scrollToTop() {
+            document.querySelector('.registration-container').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Form submission
+        document.getElementById('donorRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate final step
+            if (validateStep(currentStep)) {
+                // Prepare review content
+                prepareReviewContent();
+                
+                // Show success message
+                alert('Thank you for registering as a donor! We will contact you soon.');
+                
+                // Here you would typically send the form data to your server
+                // this.submit();
+            }
+        });
+
+        // Prepare review content
+        function prepareReviewContent() {
+            const reviewContent = document.getElementById('reviewContent');
+            let html = '<h4 style="margin-bottom: 15px; color: var(--secondary);">Your Registration Details</h4>';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">';
+            
+            // Personal Info
+            html += '<div><strong>Personal Information</strong>';
+            html += `<p>Name: ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}</p>`;
+            html += `<p>DOB: ${document.getElementById('dob').value}</p>`;
+            html += `<p>Gender: ${document.querySelector('input[name="gender"]:checked').value}</p>`;
+            html += '</div>';
+            
+            // Contact Info
+            html += '<div><strong>Contact Information</strong>';
+            html += `<p>Email: ${document.getElementById('email').value}</p>`;
+            html += `<p>Phone: ${document.getElementById('phone').value}</p>`;
+            html += `<p>Address: ${document.getElementById('address').value}, ${document.getElementById('city').value}</p>`;
+            html += `<p>State: ${document.getElementById('state').value}, Pincode: ${document.getElementById('pincode').value}</p>`;
+            html += '</div>';
+            
+            // Donation Info
+            html += '<div><strong>Donation Information</strong>';
+            html += `<p>Blood Type: ${document.querySelector('input[name="bloodType"]:checked').value}</p>`;
+            html += `<p>Donation Type: ${document.querySelector('input[name="donationType"]:checked').value}</p>`;
+            html += `<p>Frequency: ${document.querySelector('input[name="frequency"]:checked').value}</p>`;
+            if (document.getElementById('lastDonation').value) {
+                html += `<p>Last Donation: ${document.getElementById('lastDonation').value}</p>`;
+            }
+            html += '</div>';
+            
+            // Health Info
+            html += '<div><strong>Health Information</strong>';
+            html += `<p>Weight: ${document.getElementById('weight').value} kg</p>`;
+            html += `<p>Height: ${document.getElementById('height').value} cm</p>`;
+            
+            // Medical conditions
+            const conditions = Array.from(document.querySelectorAll('input[name="conditions"]:checked'))
+                .map(el => el.value === 'other' ? document.getElementById('otherConditionText').value : el.value)
+                .filter(val => val !== 'none');
+            
+            html += `<p>Medical Conditions: ${conditions.length ? conditions.join(', ') : 'None'}</p>`;
+            
+            // Diagnoses
+            const diagnoses = Array.from(document.querySelectorAll('input[name="diagnosis"]:checked'))
+                .map(el => el.value)
+                .filter(val => val !== 'none');
+            
+            html += `<p>Diagnoses: ${diagnoses.length ? diagnoses.join(', ') : 'None'}</p>`;
+            html += '</div>';
+            
+            html += '</div>';
+            reviewContent.innerHTML = html;
+        }
+
+        // Show/hide other condition text field
+        document.getElementById('otherCondition').addEventListener('change', function() {
+            const otherText = document.getElementById('otherConditionText');
+            otherText.style.display = this.checked ? 'inline-block' : 'none';
+            if (this.checked) otherText.focus();
+        });
+
+        // Uncheck "none" when other conditions are checked
+        const conditionCheckboxes = document.querySelectorAll('input[name="conditions"]:not([value="none"])');
+        conditionCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    document.querySelector('input[name="conditions"][value="none"]').checked = false;
+                }
+            });
+        });
+
+        // Check "none" when all others are unchecked
+        document.querySelector('input[name="conditions"][value="none"]').addEventListener('change', function() {
+            if (this.checked) {
+                conditionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                document.getElementById('otherConditionText').style.display = 'none';
+            }
+        });
+
+        // Similar logic for diagnosis checkboxes
+        const diagnosisCheckboxes = document.querySelectorAll('input[name="diagnosis"]:not([value="none"])');
+        diagnosisCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    document.querySelector('input[name="diagnosis"][value="none"]').checked = false;
+                }
+            });
+        });
+
+        document.querySelector('input[name="diagnosis"][value="none"]').addEventListener('change', function() {
+            if (this.checked) {
+                diagnosisCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            }
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const navContainer = document.querySelector('.nav-container');
+            if (window.scrollY > 50) {
+                navContainer.style.backgroundColor = 'var(--secondary)';
+                navContainer.style.padding = '10px 0';
+                navContainer.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+            } else {
+                navContainer.style.backgroundColor = 'transparent';
+                navContainer.style.padding = '15px 0';
+                navContainer.style.boxShadow = 'none';
+            }
+        });
+
+        // Date validation (minimum age 18 years)
+        document.getElementById('dob').addEventListener('change', function() {
+            const dob = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            
+            if (age < 18) {
+                alert('You must be at least 18 years old to register as a donor.');
+                this.value = '';
+            }
+        });
+
+        // Weight validation
+        document.getElementById('weight').addEventListener('change', function() {
+            if (this.value < 45) {
+                alert('Minimum weight requirement for blood donation is 45kg.');
+                this.value = '';
+                this.focus();
+            }
+        });
+    </script>
+
+    <script>
+  document.getElementById('donorRegistrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const donorData = {
+      // Personal Info
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      dob: document.getElementById('dob').value,
+      gender: document.querySelector('input[name="gender"]:checked')?.value,
+
+      // Contact Info
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
+      pincode: document.getElementById('pincode').value,
+
+      // Donation Info
+      bloodType: document.querySelector('input[name="bloodType"]:checked')?.value,
+      donationType: document.querySelector('input[name="donationType"]:checked')?.value,
+      frequency: document.querySelector('input[name="frequency"]:checked')?.value,
+      lastDonation: document.getElementById('lastDonation').value,
+
+      // Health Info
+      weight: document.getElementById('weight').value,
+      height: document.getElementById('height').value,
+      conditions: Array.from(document.querySelectorAll('input[name="conditions"]:checked')).map(el => el.value),
+
+      // Consent
+      consent: document.getElementById('consent').checked,
+      privacy: document.getElementById('privacy').checked,
+      updates: document.getElementById('updates').checked,
+    };
+
+    try {
+      const res = await fetch('http://localhost:5000/api/register-donor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(donorData)
+      });
+
+      if (res.ok) {
+        alert('✅ Donor registered successfully!');
+        this.reset(); // optional: reset the form
+      } else {
+        const text = await res.text();
+        alert('❌ Failed to register: ' + text);
+      }
+    } catch (err) {
+      alert('❌ Error: ' + err.message);
+    }
+  });
+  function openVoiceAssistant() {
+    // Option 1: Open in same window
+    window.location.href = 'voice_registration.html';
+    
+    // Option 2: Open in new tab (uncomment one option)
+    // window.open('voice-assistant.html', '_blank');
+}
+</script>
+
+</body>
+</html>

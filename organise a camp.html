@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organize a Blood Donation Camp | BloodConnect</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e30613;
+            --primary-dark: #b00000;
+            --secondary: #1a365d;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #28a745;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-large {
+            padding: 15px 35px;
+            font-size: 16px;
+        }
+
+        /* Header Styles */
+        .top-bar {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 25px;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Navigation */
+        header {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu .active a {
+            color: var(--primary);
+        }
+
+        .nav-menu .active a:after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 54, 93, 0.9), rgba(26, 54, 93, 0.9)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            opacity: 0.9;
+        }
+
+        /* Organizer Form Section */
+        .organizer-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: var(--transition);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .time-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-group .form-group {
+            flex: 1;
+        }
+
+        /* Map Container Styles */
+        .map-container {
+            margin: 30px 0;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .location-search {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .location-search input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 16px;
+            padding-left: 40px;
+        }
+
+        .location-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .coordinates {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .coordinates input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .form-footer p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding-top: 70px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .footer-contact li {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-menu {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 120px;
+                left: -100%;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                padding: 30px;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .hero {
+                padding: 70px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .time-group {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .coordinates {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-text">RED<span>hope</span></div>
+            </div>
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li class="active"><a href="#">Organise Camp</a></li>
+                <li><a href="#">Stories</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Organize a Blood Donation Camp</h1>
+            <p>Join us in saving lives by hosting a blood donation camp. Fill out the form below to get started with organizing your camp.</p>
+        </div>
+    </section>
+
+    <!-- Organizer Form Section -->
+    <section class="organizer-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Camp Registration Form</h2>
+                <p>Fill in the details below to organize a blood donation camp. Our team will contact you to finalize the arrangements.</p>
+            </div>
+            
+            <div class="form-container">
+                <form id="campForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="organizerName">Organizer's Full Name *</label>
+                            <input type="text" id="organizerName" name="organizerName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="organization">Organization Name *</label>
+                            <input type="text" id="organization" name="organization" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Contact Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventDate">Event Date *</label>
+                            <input type="date" id="eventDate" name="eventDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expectedDonors">Expected Number of Donors *</label>
+                            <select id="expectedDonors" name="expectedDonors" required>
+                                <option value="">Select number</option>
+                                <option value="50-100">50-100</option>
+                                <option value="100-200">100-200</option>
+                                <option value="200-300">200-300</option>
+                                <option value="300+">300+</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="time-group">
+                        <div class="form-group">
+                            <label for="startTime">Start Time *</label>
+                            <input type="time" id="startTime" name="startTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="endTime">End Time *</label>
+                            <input type="time" id="endTime" name="endTime" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="campName">Camp Name / Theme</label>
+                        <input type="text" id="campName" name="campName" placeholder="e.g. Blood Donation Drive 2025">
+                    </div>
+                    
+                    <!-- Location Search and Map -->
+                    <div class="form-group">
+                        <label for="locationSearch">Search Location *</label>
+                        <div class="location-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="locationSearch" placeholder="Search for a location in India..." required>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <div id="map"></div>
+                        <div class="coordinates" style="margin-top: 10px;">
+                            <input type="text" id="latitude" placeholder="Latitude" readonly>
+                            <input type="text" id="longitude" placeholder="Longitude" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Venue Address *</label>
+                        <textarea id="address" name="address" placeholder="Full address of the camp venue" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additionalInfo">Additional Information</label>
+                        <textarea id="additionalInfo" name="additionalInfo" placeholder="Any special requirements, parking instructions, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <p>By submitting this form, you agree to our terms and conditions. Our team will contact you within 24-48 hours to confirm your camp details.</p>
+                        <button type="submit" class="btn btn-large">Submit Registration</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <div class="logo-text" style="color: white;">RED<span style="color: var(--primary);">hope</span></div>
+                    </div>
+                    <p>BloodConnect is India's largest youth-run non-profit organization working to solve the problem of blood shortage in the country.</p>
+                    <div class="social-links" style="margin-top: 25px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Our Initiatives</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Get Involved</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Stories</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blood Donation FAQs</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Eligibility Criteria</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Donation Process</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blood Banks</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Health Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 BloodConnect Avenue, New Delhi, India 110001</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Helpline: +91 123 456 7890</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info.redhope@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 REDhope. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> to Save Lives</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <!-- Leaflet Geosearch -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.8.0/dist/geosearch.css"/>
+    <script src="https://unpkg.com/leaflet-geosearch@3.8.0/dist/geosearch.umd.js"></script>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+        
+        // Initialize Leaflet Map
+        let map;
+        let marker;
+        let searchControl;
+        
+        function initMap() {
+            // Default to New Delhi, India
+            const defaultLocation = [28.6139, 77.2090];
+            
+            // Create map
+            map = L.map('map').setView(defaultLocation, 12);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add marker at default location
+            marker = L.marker(defaultLocation, {
+                draggable: true,
+                title: "Drag to set camp location"
+            }).addTo(map);
+            
+            // Initialize geosearch
+            const provider = new GeoSearch.OpenStreetMapProvider({
+                params: {
+                    countrycodes: 'in', // Restrict to India
+                    limit: 5
+                }
+            });
+            
+            searchControl = new GeoSearch.GeoSearchControl({
+                provider: provider,
+                style: 'bar',
+                showMarker: false,
+                autoClose: true,
+                retainZoomLevel: false,
+                animateZoom: true,
+                keepResult: true,
+                searchLabel: 'Search location in India...'
+            });
+            
+            map.addControl(searchControl);
+            
+            // When marker is dragged
+            marker.on('dragend', function() {
+                updateMarkerPosition(marker.getLatLng());
+            });
+            
+            // When map is clicked
+            map.on('click', function(event) {
+                marker.setLatLng(event.latlng);
+                updateMarkerPosition(event.latlng);
+            });
+            
+            // When a location is selected from search
+            map.on('geosearch/showlocation', function(result) {
+                marker.setLatLng(result.location);
+                updateMarkerPosition(result.location);
+                document.getElementById('address').value = result.location.label || '';
+            });
+            
+            // Initialize coordinates
+            updateMarkerPosition(defaultLocation);
+        }
+        
+        function updateMarkerPosition(latLng) {
+            document.getElementById('latitude').value = latLng.lat ? latLng.lat : latLng[0];
+            document.getElementById('longitude').value = latLng.lng ? latLng.lng : latLng[1];
+            
+            // Reverse geocode to get address (using Nominatim)
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLng.lat ? latLng.lat : latLng[0]}&lon=${latLng.lng ? latLng.lng : latLng[1]}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.display_name) {
+                        document.getElementById('address').value = data.display_name;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching address:', error);
+                });
+        }
+        
+        // Form Submission
+        document.getElementById('campForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Form validation
+            const organizerName = document.getElementById('organizerName').value;
+            const organization = document.getElementById('organization').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const address = document.getElementById('address').value;
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+            
+            if (!organizerName || !organization || !email || !phone || !eventDate || !address || !latitude || !longitude) {
+                alert('Please fill all required fields and select a location on the map');
+                return;
+            }
+            
+            const formData = {
+                organizerName: organizerName,
+                organization: organization,
+                email: email,
+                phone: phone,
+                eventDate: eventDate,
+                expectedDonors: document.getElementById('expectedDonors').value,
+                startTime: document.getElementById('startTime').value,
+                endTime: document.getElementById('endTime').value,
+                campName: document.getElementById('campName').value,
+                address: address,
+                latitude: latitude,
+                longitude: longitude,
+                additionalInfo: document.getElementById('additionalInfo').value
+            };
+
+            try {
+                const res = await fetch('http://localhost:5000/api/organize-camp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (res.ok) {
+                    alert('✅ Camp organized successfully!');
+                    this.reset();
+                    // Reset map to default location
+                    const defaultLocation = [28.6139, 77.2090];
+                    map.setView(defaultLocation, 12);
+                    marker.setLatLng(defaultLocation);
+                    updateMarkerPosition(defaultLocation);
+                } else {
+                    const text = await res.text();
+                    alert('❌ Failed: ' + text);
+                }
+            } catch (err) {
+                alert('❌ Error: ' + err.message);
+            }
+        });
+        
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('eventDate').setAttribute('min', today);
+        
+        // Initialize the map when the window loads
+        window.onload = function() {
+            initMap();
+        };
+    </script>
+</body>
+</html>

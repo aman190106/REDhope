@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RED Hope - Blood Donation Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f9f9ff, #e6f0ff);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(to right, #e53935, #e35d5b);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: #ffeb3b;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            padding: 2rem;
+            flex: 1;
+            min-width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card h2 {
+            color: #e53935;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            padding: 2.5rem;
+            flex: 1;
+            min-width: 350px;
+        }
+        
+        .form-title {
+            color: #e53935;
+            text-align: center;
+            margin-bottom: 1.8rem;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #444;
+            font-weight: 500;
+        }
+        
+        .input-group input, 
+        .input-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: #e53935;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+        }
+        
+        .gender-options {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .gender-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-prev {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+        
+        .btn-prev:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-next {
+            background: linear-gradient(to right, #e53935, #e35d5b);
+            color: white;
+        }
+        
+        .btn-next:hover {
+            background: linear-gradient(to right, #d32f2f, #e53935);
+            box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+        }
+        
+        /* Floating microphone button */
+        .voice-assistant-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, #e53935, #d32f2f);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(229, 57, 53, 0.5);
+            z-index: 1000;
+            border: none;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .voice-assistant-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(229, 57, 53, 0.6);
+        }
+        
+        .voice-assistant-btn i {
+            font-size: 28px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(229, 57, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+            }
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            padding: 2.5rem 1.5rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            color: #e53935;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #e53935;
+        }
+        
+        .contact-info {
+            color: #ddd;
+            line-height: 1.7;
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #555;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Voice assistant demo page */
+        .voice-assistant-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .voice-assistant-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            animation: modalIn 0.4s ease;
+        }
+        
+        @keyframes modalIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .voice-assistant-content h2 {
+            color: #e53935;
+            margin-bottom: 1.5rem;
+        }
+        
+        .voice-assistant-content p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .voice-icon {
+            font-size: 4rem;
+            color: #e53935;
+            margin: 1.5rem 0;
+            animation: pulseIcon 1.5s infinite;
+        }
+        
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #e53935;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .voice-assistant-btn {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .voice-assistant-content {
+                padding: 1.5rem;
+            }
+            
+            .voice-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>RED hope</span>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <h2>About RED Hope</h2>
+            <p>RED Hope is a non-profit organization dedicated to supporting patients with rare blood disorders. Our mission is to provide resources, support, and hope to individuals and families affected by these conditions.</p>
+            <p>We connect donors with recipients, provide educational materials, and offer emotional support through our dedicated helpline and community events.</p>
+            <p>Your participation in our donor program helps save lives and brings hope to those in need. Every donation makes a significant difference.</p>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="form-title">Personal Information</h2>
+            <form>
+                <div class="input-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="dob">Date of Birth *</label>
+                    <input type="text" id="dob" placeholder="dd-mm-yyyy" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Gender *</label>
+                    <div class="gender-options">
+                        <div class="gender-option">
+                            <input type="radio" id="male" name="gender" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="female" name="gender" required>
+                            <label for="female">Female</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="other" name="gender" required>
+                            <label for="other">Other</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-prev">
+                        <i class="fas fa-arrow-left"></i> PREVIOUS
+                    </button>
+                    <button class="btn btn-next">
+                        NEXT <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Floating microphone button -->
+    <button class="voice-assistant-btn" onclick="openVoiceAssistant()">
+        <i class="fas fa-microphone"></i>
+    </button>
+    
+    <!-- Voice Assistant Modal (Demo) -->
+    <div class="voice-assistant-modal" id="voiceAssistantModal">
+        <div class="voice-assistant-content">
+            <button class="close-btn" onclick="closeVoiceAssistant()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2>Voice Assistant</h2>
+            <p>This would open your voice assistant interface. Replace this modal with your actual voice assistant HTML page.</p>
+            <div class="voice-icon">
+                <i class="fas fa-microphone-alt"></i>
+            </div>
+            <p>In your implementation, this button would open a separate HTML file (e.g., voice-assistant.html).</p>
+            <p>To integrate with your website:</p>
+            <ol style="text-align: left; margin: 20px; line-height: 2;">
+                <li>Create your voice-assistant.html file</li>
+                <li>Replace the onclick function to open that file</li>
+                <li>Style it according to your needs</li>
+            </ol>
+            <button class="btn btn-next" onclick="closeVoiceAssistant()">
+                Close Demo <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Donor Program</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Volunteer</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Donor Resources</h3>
+                <ul>
+                    <li><a href="#">Eligibility Criteria</a></li>
+                    <li><a href="#">Donation Process</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> info.redinona@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> Helpline: +91 7984510XXX</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Hope Street, Mumbai, India</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 RED Hope. All rights reserved.
+        </div>
+    </footer>
+    
+    <script>
+        // Function to open voice assistant
+        function openVoiceAssistant() {
+            // For demonstration, we're showing a modal
+            document.getElementById('voiceAssistantModal').style.display = 'flex';
+            
+            // In your actual implementation, use one of these:
+            // Option 1: Open in same window
+            // window.location.href = 'voice-assistant.html';
+            
+            // Option 2: Open in new tab
+            // window.open('voice-assistant.html', '_blank');
+        }
+        
+        // Function to close voice assistant modal
+        function closeVoiceAssistant() {
+            document.getElementById('voiceAssistantModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

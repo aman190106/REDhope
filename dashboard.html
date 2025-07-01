@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDhope - Blood Donor Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e53935;
+            --primary-dark: #c62828;
+            --secondary: #f5f5f5;
+            --dark: #333;
+            --light: #fff;
+            --gray: #777;
+            --success: #4CAF50;
+            --whatsapp: #25D366;
+            --twilio: #F22F46;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .blood-drop {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: var(--primary);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            opacity: 0.08;
+            z-index: -1;
+        }
+
+        .drop-1 {
+            top: 10%;
+            left: 5%;
+        }
+
+        .drop-2 {
+            top: 60%;
+            right: 10%;
+        }
+
+        .drop-3 {
+            top: 30%;
+            right: 25%;
+        }
+
+        .drop-4 {
+            top: 70%;
+            left: 20%;
+        }
+
+        header {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(229, 57, 53, 0.9), rgba(198, 40, 40, 0.9)), url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3') center/cover;
+            color: var(--light);
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp);
+            color: var(--light);
+        }
+        
+        .btn-twilio {
+            background-color: var(--twilio);
+            color: var(--light);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--light);
+            border: 2px solid var(--light);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            min-height: 60vh;
+        }
+
+        .dashboard-container {
+            display: none;
+            background: var(--light);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-message h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .donor-badge {
+            background-color: var(--light);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-content {
+            display: flex;
+            padding: 2rem;
+        }
+
+        .donor-info {
+            flex: 1;
+            padding-right: 2rem;
+        }
+
+        .donor-info h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--secondary);
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card h4 {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .info-card p {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .blood-group {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+
+        .donation-history {
+            flex: 1;
+            border-left: 1px solid #eee;
+            padding-left: 2rem;
+        }
+
+        .donation-history h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .history-item {
+            background: var(--secondary);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: #e8f5e9;
+            transform: translateX(5px);
+        }
+
+        .history-date {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .history-location {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .history-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .auth-container {
+            background: var(--light);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-container h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .otp-container {
+            display: none;
+        }
+
+        .timer {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .resend-otp {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .resend-otp:hover {
+            color: var(--primary-dark);
+        }
+
+        .whatsapp-notification {
+            background: #dcf8c6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: none;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .whatsapp-notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-icon {
+            background: var(--whatsapp);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .whatsapp-message {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .whatsapp-message strong {
+            color: var(--primary);
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links li {
+            margin: 0 1rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        .copyright {
+            margin-top: 1.5rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .api-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success);
+            display: inline-block;
+        }
+        
+        .twilio-powered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+            color: var(--twilio);
+            font-weight: 500;
+        }
+        
+        .server-response {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-content {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            
+            .donor-info, .donation-history {
+                padding: 0;
+                border: none;
+            }
+            
+            .donation-history {
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid #eee;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+            
+            .auth-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Blood Drop Decorations -->
+    <div class="blood-drop drop-1"></div>
+    <div class="blood-drop drop-2"></div>
+    <div class="blood-drop drop-3"></div>
+    <div class="blood-drop drop-4"></div>
+    
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <i class="fas fa-tint"></i>
+                REDhope
+            </a>
+            <ul class="nav-links">
+                <li><a href="/frontend/index.html">Home</a></li>
+                <li><a href="/frontend/about.html">About Us</a></li>
+                <li><a href="/frontend/stories.html">Stories</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#" class="active">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Connecting Blood Donors with Those in Need</h1>
+        <p>Join India's largest youth-run blood donation organization. Together, we can save millions of lives by ensuring no one dies due to lack of blood.</p>
+    </section>
+    
+    <div class="container">
+        <!-- Authentication Section -->
+        <div class="auth-container" id="authContainer">
+            <h2>
+                <i class="fas fa-user-shield"></i> Donor Authentication
+            </h2>
+            <form class="auth-form" id="authForm">
+                <div class="form-group">
+                    <label for="mobile"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+                    <input type="tel" id="mobile" placeholder="Enter your 10-digit mobile number" maxlength="10" required>
+                </div>
+                
+                <div class="form-group otp-container" id="otpContainer">
+                    <label for="otp"><i class="fas fa-lock"></i> Enter OTP</label>
+                    <input type="text" id="otp" placeholder="Enter 6-digit OTP" maxlength="6" required>
+                    <div class="timer" id="timer">
+                        <i class="fas fa-clock"></i> 02:00
+                    </div>
+                    <a class="resend-otp" id="resendOtp">
+                        <i class="fas fa-redo"></i> Resend OTP
+                    </a>
+                </div>
+                
+                <button type="button" class="btn btn-twilio" id="submitBtn">
+                    <i class="fab fa-whatsapp"></i> Send OTP via WhatsApp
+                </button>
+                
+                <div class="whatsapp-notification" id="whatsappNotification">
+                    <div class="whatsapp-notification-content">
+                        <div class="whatsapp-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="whatsapp-message">
+                            <strong>OTP sent successfully!</strong> Check your WhatsApp messages for the verification code.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="server-response" id="serverResponse"></div>
+            </form>
+            
+            <div class="api-status">
+                <span class="status-indicator"></span>
+                WhatsApp API Status: Connected
+            </div>
+            <div class="twilio-powered">
+                <i class="fas fa-shield-alt"></i> Secured by Twilio Verify (Simulated)
+            </div>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div class="dashboard-container" id="dashboard">
+            <div class="dashboard-header">
+                <div class="welcome-message">
+                    <h2>Welcome back, <span id="donorName">Aman</span>!</h2>
+                    <p>Thank you for being a life-saver. Your contributions make a difference.</p>
+                </div>
+                <div class="donor-badge">
+                    <i class="fas fa-medal"></i> Hero Donor
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="donor-info">
+                    <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h4>Blood Group</h4>
+                            <div class="blood-group">B+</div>
+                        </div>
+                        <div class="info-card">
+                            <h4>Age</h4>
+                            <p>19 years</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Date of Birth</h4>
+                            <p>19 January, 2006</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Height</h4>
+                            <p>175 cm</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Phone Number</h4>
+                            <p><i class="fas fa-phone"></i> +91 7984510xxx</p>
+                        </div>
+                        <div class="info-card">
+                            <h4>Location</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> PARUL University, vadodra</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card" style="margin-top: 1.5rem;">
+                        <h4>Total Donations</h4>
+                        <p style="font-size: 2rem; color: var(--primary);">7 times</p>
+                        <p style="margin-top: 0.5rem; color: var(--success);">
+                            <i class="fas fa-check-circle"></i> Eligible to donate now
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="donation-history">
+                    <h3><i class="fas fa-history"></i> Donation History</h3>
+                    <div class="history-list">
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">12 June, 2025</div>
+                                <div class="history-location">City Blood Bank, Bangalore</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">15 March, 2025</div>
+                                <div class="history-location">Red Cross Camp, MG Road</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">10 December, 2024</div>
+                                <div class="history-location">Government Hospital, Whitefield</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">25 August, 2024</div>
+                                <div class="history-location">Community Center, Koramangala</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">5 May, 2024</div>
+                                <div class="history-location">Corporate Camp, Tech Park</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">12 January, 2024</div>
+                                <div class="history-location">City Blood Bank, Bangalore</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                        <div class="history-item">
+                            <div>
+                                <div class="history-date">15 October, 2023</div>
+                                <div class="history-location">Red Cross Camp, MG Road</div>
+                            </div>
+                            <div class="history-badge">Successful</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-tint"></i>
+                REDhope
+            </div>
+            <ul class="footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Stories</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+            <p>Join India's largest youth-run blood donation organization. Together, we can save millions of lives.</p>
+            <div class="copyright">
+                &copy; 2025 REDhope. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const authContainer = document.getElementById('authContainer');
+            const dashboard = document.getElementById('dashboard');
+            const otpContainer = document.getElementById('otpContainer');
+            const submitBtn = document.getElementById('submitBtn');
+            const mobileInput = document.getElementById('mobile');
+            const otpInput = document.getElementById('otp');
+            const resendOtp = document.getElementById('resendOtp');
+            const timerElement = document.getElementById('timer');
+            const whatsappNotification = document.getElementById('whatsappNotification');
+            const serverResponse = document.getElementById('serverResponse');
+            
+            let timer;
+            let timeLeft = 120; // 2 minutes in seconds
+            let generatedOTP = '';
+            
+            // Initially hide dashboard
+            dashboard.style.display = 'none';
+            whatsappNotification.style.display = 'none';
+            serverResponse.style.display = 'none';
+            
+            // Mobile number validation
+            mobileInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').substring(0, 10);
+            });
+            
+            // OTP input validation
+            otpInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').substring(0, 6);
+            });
+            
+            // Function to generate a random 6-digit OTP
+            function generateOTP() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            // Display server response
+            function showServerResponse(message) {
+                serverResponse.textContent = message;
+                serverResponse.style.display = 'block';
+                setTimeout(() => {
+                    serverResponse.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Simulate sending OTP
+            function sendOTP(mobile) {
+                return new Promise((resolve) => {
+                    // Simulate API delay
+                    setTimeout(() => {
+                        // Generate OTP
+                        generatedOTP = generateOTP();
+                        showServerResponse(`OTP sent to ${mobile}: ${generatedOTP} (Simulated)`);
+                        resolve(true);
+                    }, 1500);
+                });
+            }
+            
+            // Simulate verifying OTP
+            function verifyOTP(otp) {
+                return new Promise((resolve) => {
+                    // Simulate API delay
+                    setTimeout(() => {
+                        if (otp === generatedOTP) {
+                            showServerResponse('OTP verified successfully!');
+                            resolve(true);
+                        } else {
+                            showServerResponse('Incorrect OTP. Please try again.');
+                            resolve(false);
+                        }
+                    }, 1000);
+                });
+            }
+            
+            // Submit button handler
+            submitBtn.addEventListener('click', async function() {
+                if (!otpContainer.style.display || otpContainer.style.display === 'none') {
+                    // First step: Send OTP
+                    const mobile = mobileInput.value;
+                    
+                    if (mobile.length !== 10) {
+                        alert('Please enter a valid 10-digit mobile number');
+                        return;
+                    }
+                    
+                    // Disable button during API request
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending OTP...';
+                    
+                    try {
+                        // Send OTP
+                        const success = await sendOTP(mobile);
+                        
+                        if (success) {
+                            // Show WhatsApp notification
+                            whatsappNotification.style.display = 'block';
+                            
+                            // Update button text
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify OTP';
+                            
+                            // Show OTP container
+                            otpContainer.style.display = 'block';
+                            
+                            // Start the timer
+                            startTimer();
+                            
+                            // Scroll to OTP field
+                            setTimeout(() => {
+                                otpInput.focus();
+                                otpContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }, 300);
+                        }
+                    } catch (error) {
+                        alert('Failed to send OTP. Please try again.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Send OTP via WhatsApp';
+                        console.error('Error:', error);
+                    }
+                } else {
+                    // Second step: Verify OTP
+                    const otp = otpInput.value;
+                    
+                    if (otp.length !== 6) {
+                        alert('Please enter a valid 6-digit OTP');
+                        return;
+                    }
+                    
+                    // Disable button during verification
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                    
+                    try {
+                        // Verify OTP
+                        const success = await verifyOTP(otp);
+                        
+                        if (success) {
+                            // Successful authentication
+                            authContainer.style.display = 'none';
+                            dashboard.style.display = 'block';
+                            clearInterval(timer);
+                            
+                            // Scroll to dashboard
+                            setTimeout(() => {
+                                dashboard.scrollIntoView({ behavior: 'smooth' });
+                            }, 300);
+                        } else {
+                            otpInput.value = '';
+                            otpInput.focus();
+                        }
+                    } catch (error) {
+                        alert('Verification failed. Please try again.');
+                        console.error('Error:', error);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify OTP';
+                    }
+                }
+            });
+            
+            // Resend OTP handler
+            resendOtp.addEventListener('click', async function() {
+                // Only allow resend if timer has expired or user requests
+                if (timeLeft <= 0) {
+                    const mobile = mobileInput.value;
+                    
+                    if (mobile.length !== 10) {
+                        alert('Please enter a valid mobile number first');
+                        return;
+                    }
+                    
+                    // Disable button during request
+                    resendOtp.style.pointerEvents = 'none';
+                    resendOtp.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resending...';
+                    
+                    try {
+                        // Resend OTP
+                        await sendOTP(mobile);
+                        
+                        // Show notification
+                        showNotification('New OTP sent to your WhatsApp');
+                        
+                        // Reset timer
+                        clearInterval(timer);
+                        timeLeft = 120;
+                        updateTimer();
+                        startTimer();
+                        
+                        // Focus on OTP field
+                        otpInput.focus();
+                    } catch (error) {
+                        alert('Failed to resend OTP. Please try again.');
+                        console.error('Error:', error);
+                    } finally {
+                        resendOtp.style.pointerEvents = 'auto';
+                        resendOtp.innerHTML = '<i class="fas fa-redo"></i> Resend OTP';
+                    }
+                } else {
+                    alert(`Please wait until the timer expires to resend OTP.`);
+                }
+            });
+            
+            // Timer functions
+            function startTimer() {
+                timerElement.style.color = ''; // Reset color
+                resendOtp.style.display = 'none'; // Hide resend initially
+                updateTimer();
+                
+                timer = setInterval(function() {
+                    timeLeft--;
+                    updateTimer();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerElement.innerHTML = '<i class="fas fa-exclamation-circle"></i> OTP expired';
+                        timerElement.style.color = 'var(--primary)';
+                        resendOtp.style.display = 'block';
+                    }
+                }, 1000);
+            }
+            
+            function updateTimer() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.innerHTML = `<i class="fas fa-clock"></i> ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // Show notification function
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    background: var(--success);
+                    color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+            
+            // Auto-fill for demo purposes
+            mobileInput.value = '7984510897';
+        });
+    </script>
+</body>
+</html>

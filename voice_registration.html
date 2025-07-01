@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e30613;
+            --primary-dark: #b00000;
+            --secondary: #1a365d;
+            --light: #f8f9fa;
+            --light-gray: #e9ecef;
+            --dark: #212529;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        h1 span {
+            color: var(--primary);
+        }
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        .tab.active {
+            border-bottom-color: var(--primary);
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+        }
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: var(--primary-dark);
+        }
+        .voice-status {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 4px;
+        }
+        #voiceLog {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .donor-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .donor-table th, .donor-table td {
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            text-align: left;
+        }
+        .donor-table th {
+            background: var(--secondary);
+            color: white;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .badge-voice {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .badge-web {
+            background: #d4edda;
+            color: #155724;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .tab-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 style="color: red;">RED<span  style="color: white;">hope</span></h1>
+            <p>Register as a blood donor and save lives</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tab-container">
+            <div class="tab active" data-tab="form">Form Registration</div>
+            <div class="tab" data-tab="voice">Voice Registration</div>
+            <div class="tab" data-tab="admin">Admin Dashboard</div>
+        </div>
+
+        <div id="form-tab" class="tab-content active">
+            <h2>Register as Donor</h2>
+            <form id="donorForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" min="18" max="65" required>
+                </div>
+                <div class="form-group">
+                    <label for="bloodGroup">Blood Group</label>
+                    <select id="bloodGroup" required>
+                        <option value="">Select</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div id="voice-tab" class="tab-content">
+            <h2>Voice Registration</h2>
+            <p>Click the button below and speak when prompted</p>
+            <button id="startVoiceBtn"><i class="fas fa-microphone"></i> Start Voice Registration</button>
+            <div class="voice-status">
+                <div id="voiceStatus">Ready to start</div>
+                <div id="voiceLog"></div>
+            </div>
+        </div>
+
+        
+        <div id="admin-tab" class="tab-content">
+            <h2>Donor Management</h2>
+            <div class="stats">
+                <div>Total Donors: <span id="totalDonors">0</span></div>
+                <div>Web Registrations: <span id="webDonors">0</span></div>
+                <div>Voice Registrations: <span id="voiceDonors">0</span></div>
+            </div>
+            <button id="refreshDonors">Refresh Data</button>
+            <table class="donor-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Blood Group</th>
+                        <th>Location</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody id="donorTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                
+                if (tab.dataset.tab === 'admin') {
+                    loadDonorData();
+                }
+            });
+        });
+
+        document.getElementById('donorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const donorData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                registrationMethod: 'web',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('/api/donors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(donorData)
+                });
+
+                if (response.ok) {
+                    alert('Registration successful!');
+                    document.getElementById('donorForm').reset();
+                } else {
+                    throw new Error('Registration failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            }
+        });
+
+        const voiceStatus = document.getElementById('voiceStatus');
+        const voiceLog = document.getElementById('voiceLog');
+        let recognition;
+        let currentQuestion = 0;
+        const questions = [
+            "Please say your full name",
+            "Please say your age",
+            "Please say your blood group",
+            "Please say your phone number",
+            "Please say your location"
+        ];
+        const voiceResponses = [];
+
+        document.getElementById('startVoiceBtn').addEventListener('click', () => {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-IN';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                voiceStatus.textContent = "Listening...";
+                askQuestion(currentQuestion);
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                voiceResponses.push(transcript);
+                voiceLog.innerHTML += `<div><strong>Q:</strong> ${questions[currentQuestion]}<br><strong>A:</strong> ${transcript}</div>`;
+                
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    setTimeout(() => askQuestion(currentQuestion), 1000);
+                } else {
+                    completeVoiceRegistration();
+                }
+            };
+
+            recognition.onerror = (event) => {
+                voiceStatus.textContent = `Error: ${event.error}`;
+                voiceLog.innerHTML += `<div style="color:red;">Error: ${event.error}</div>`;
+            };
+
+            recognition.start();
+        });
+
+        function askQuestion(index) {
+            if (index >= questions.length) return;
+            
+            voiceStatus.textContent = questions[index];
+            const utterance = new SpeechSynthesisUtterance(questions[index]);
+            window.speechSynthesis.speak(utterance);
+            
+            utterance.onend = () => {
+                recognition.start();
+            };
+        }
+
+        async function completeVoiceRegistration() {
+            voiceStatus.textContent = "Processing your information...";
+            
+            const donorData = {
+                name: voiceResponses[0],
+                age: voiceResponses[1],
+                bloodGroup: voiceResponses[2],
+                phone: voiceResponses[3],
+                location: voiceResponses[4],
+                registrationMethod: 'voice',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('/api/donors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(donorData)
+                });
+
+                if (response.ok) {
+                    voiceStatus.textContent = "Registration successful!";
+                    voiceLog.innerHTML += '<div style="color:green;">Registration completed successfully</div>';
+                    currentQuestion = 0;
+                    voiceResponses.length = 0;
+                } else {
+                    throw new Error('Registration failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                voiceStatus.textContent = "Registration failed";
+                voiceLog.innerHTML += '<div style="color:red;">Registration failed. Please try again.</div>';
+            }
+        }
+
+        async function loadDonorData() {
+            try {
+                const response = await fetch('/api/donors');
+                const donors = await response.json();
+                
+                document.getElementById('totalDonors').textContent = donors.length;
+                document.getElementById('webDonors').textContent = donors.filter(d => d.registrationMethod === 'web').length;
+                document.getElementById('voiceDonors').textContent = donors.filter(d => d.registrationMethod === 'voice').length;
+                
+                const tableBody = document.getElementById('donorTableBody');
+                tableBody.innerHTML = '';
+                
+                donors.forEach(donor => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${donor.name || 'N/A'}</td>
+                        <td>${donor.age || 'N/A'}</td>
+                        <td>${donor.bloodGroup || 'N/A'}</td>
+                        <td>${donor.location || 'N/A'}</td>
+                        <td><span class="badge badge-${donor.registrationMethod || 'web'}">${donor.registrationMethod || 'web'}</span></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading donor data:', error);
+            }
+        }
+
+        document.getElementById('refreshDonors').addEventListener('click', loadDonorData);
+
+        if (document.querySelector('.tab[data-tab="admin"]').classList.contains('active')) {
+            loadDonorData();
+        }
+    </script>
+</body>
+</html>

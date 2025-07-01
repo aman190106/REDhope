@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>redhope - Stories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Raleway:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e30613;
+            --secondary: #f8f9fa;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+            --accent: #ff6b6b;
+            --text: #333333;
+            --transition: all 0.4s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        .header {
+            background-color: var(--light);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        
+        .logo span {
+            color: var(--dark);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(227, 6, 19, 0.3);
+        }
+        
+        .btn:hover {
+            background: #c10511;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(227, 6, 19, 0.4);
+        }
+        
+        /* Stories Hero Section */
+        .stories-hero {
+            background: linear-gradient(rgba(227, 6, 19, 0.85), rgba(193, 5, 17, 0.85)), url('https://images.unsplash.com/photo-1584118624012-df056829fbd0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 3.5rem;
+            color: var(--light);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        /* Pulse animation for blood drop */
+        .blood-drop {
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .drop-1 { top: 15%; left: 10%; }
+        .drop-2 { top: 25%; right: 15%; animation-delay: 0.5s; }
+        .drop-3 { bottom: 20%; left: 20%; animation-delay: 1s; }
+        .drop-4 { bottom: 15%; right: 25%; animation-delay: 1.5s; }
+        
+        /* Stories Section */
+        .stories-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            margin: 5px 10px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--light);
+        }
+        
+        .stories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .story-card {
+            background: var(--light);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            transform: translateY(0);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            position: relative;
+        }
+        
+        .story-card:nth-child(1) { animation-delay: 0.1s; }
+        .story-card:nth-child(2) { animation-delay: 0.2s; }
+        .story-card:nth-child(3) { animation-delay: 0.3s; }
+        .story-card:nth-child(4) { animation-delay: 0.4s; }
+        .story-card:nth-child(5) { animation-delay: 0.5s; }
+        .story-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .user-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid var(--primary);
+            transition: var(--transition);
+        }
+        
+        .story-card:hover .user-img {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+        
+        .user-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .role-donor {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+        
+        .role-recipient {
+            background: rgba(33, 150, 243, 0.2);
+            color: #1565c0;
+        }
+        
+        .role-organizer {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ef6c00;
+        }
+        
+        .story-content {
+            padding: 0 20px 20px;
+        }
+        
+        .story-content p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .story-content .quote-icon {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .story-date {
+            display: flex;
+            align-items: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .story-date i {
+            margin-right: 5px;
+            color: var(--accent);
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            background: linear-gradient(to right, var(--primary), #ff5252);
+            padding: 80px 20px;
+            text-align: center;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-container h2 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 2.5rem;
+            color: var(--light);
+            margin-bottom: 20px;
+        }
+        
+        .cta-container p {
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--light);
+            color: var(--light);
+        }
+        
+        .btn-outline:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: 60px 20px 20px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: var(--light);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            text-align: center;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 5px 10px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .stories-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .cta-container h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>RED<span>hope</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="about.html" class="active"><i class="fas fa-lightbulb"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact Us</a></li>
+            </ul>
+            <a href="#" class="btn">DONATE NOW</a>
+        </nav>
+    </header>
+
+    <!-- Stories Hero Section -->
+    <section class="stories-hero">
+        <div class="hero-content">
+            <h1>Life-Changing Stories</h1>
+            <p>Read inspiring experiences from donors who gave the gift of life, recipients whose lives were saved, and organizers who made it all possible.</p>
+        </div>
+        
+        <!-- Animated blood drops -->
+        <div class="blood-drop drop-1"><i class="fas fa-tint"></i></div>
+        <div class="blood-drop drop-2"><i class="fas fa-tint"></i></div>
+        <div class="blood-drop drop-3"><i class="fas fa-tint"></i></div>
+        <div class="blood-drop drop-4"><i class="fas fa-tint"></i></div>
+    </section>
+
+    <!-- Stories Section -->
+    <section class="stories-section">
+        <div class="section-title">
+            <h2>Share Your Experience</h2>
+        </div>
+        
+        <div class="stories-container">
+            <!-- Story 1 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Priya Sharma</h3>
+                        <span class="user-role role-donor">Donor</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"I've been donating blood for 5 years through REDhope. The process is so smooth and the staff is incredibly supportive. Knowing that my blood helped save a child's life last month fills me with joy!"</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> June 15, 2025
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story 2 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Raj Patel</h3>
+                        <span class="user-role role-recipient">Recipient</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"After my accident, I needed 4 units of blood. REDhope found donors within hours. I'm alive today because of their amazing network. Forever grateful to the donors and this platform!"</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> May 28, 2025
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story 3 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Ananya Singh</h3>
+                        <span class="user-role role-organizer">Organizer</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"As a college event organizer, REDhope made our donation camp incredibly successful. Their platform helped us register 127 donors in one day! The dashboard and real-time tracking are game-changers."</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> June 3, 2025
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story 4 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Vikram Mehta</h3>
+                        <span class="user-role role-donor">Donor</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"I was nervous about donating for the first time, but the REDhope team made me feel so comfortable. The entire process took less than an hour. I've already scheduled my next donation!"</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> April 18, 2025
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story 5 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Sunita Reddy</h3>
+                        <span class="user-role role-recipient">Recipient</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"My daughter needed rare AB- blood during her surgery. We were desperate, but REDhope located a donor 50km away who drove to the hospital immediately. Thank you for saving my baby!"</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> March 30, 2025
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Story 6 -->
+            <div class="story-card">
+                <div class="user-info">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="User" class="user-img">
+                    <div class="user-details">
+                        <h3>Arun Kumar</h3>
+                        <span class="user-role role-organizer">Organizer</span>
+                    </div>
+                </div>
+                <div class="story-content">
+                    <span class="quote-icon"><i class="fas fa-quote-left"></i></span>
+                    <p>"Our corporate blood drive with REDblood was the most efficient we've ever had. The mobile app for donor check-in reduced wait times by 70%. We collected 89 units in just 5 hours!"</p>
+                    <div class="story-date">
+                        <i class="fas fa-calendar-alt"></i> May 12, 2025
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Every Drop Counts. Every Life Matters.</h2>
+            <p>Join India's largest youth-run blood donation organization. Together, we can save millions of lives by ensuring no one dies due to lack of blood.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>REDhope</h3>
+                <p>India's largest youth-run blood donation organization. Together,
+                 we can ensure no one dies due to lack of blood.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Stories</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Get Involved</h3>
+                <ul>
+                    <li><a href="#">Donate Blood</a></li>
+                    <li><a href="#">Organize a Camp</a></li>
+                    <li><a href="#">Volunteer</a></li>
+                    <li><a href="#">Partner With Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i>xyz PARUL UNIVERSITY, Vadodara, Gujarat</p>
+                <p><i class="fas fa-phone"></i> +91 79845 10xxx</p>
+                <p><i class="fas fa-envelope"></i>info.redhope@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 REDblood. All Rights Reserved. Every Drop Counts. Every Life Matters.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // In a real implementation, this would filter the stories
+                // For this demo, we'll just show all stories
+            });
+        });
+        
+        // Animation on scroll for story cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const storyCards = document.querySelectorAll('.story-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            storyCards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
