@@ -16,7 +16,7 @@
 - 💬 **Clean and Intuitive UI**: Easy to navigate, responsive design for all devices.
 
 ## 🤖 Technology Used:-
-- **Frontend**: HTML5, CSS, JavaScript
+- **Frontend**: HTML5, CSS, JavaScript,python
 - **Hosting**: GitHub Pages
 
 ##  📌 Project Goals:-
@@ -48,7 +48,7 @@ This project is licensed under the [MIT License](LICENSE).
 Made with ❤️ by [AMAN](https://github.com/aman190106)
 
 ## ✨ CONTACT :-
-   📩 aman1805techie@gmail.com
+   📩 aman1805techie@gmail.com ,, amankush190106@gmail.com
    🌐 https://www.linkedin.com/in/aman-kushwaha-778975356/
    
 
